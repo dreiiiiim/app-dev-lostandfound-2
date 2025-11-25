@@ -3,28 +3,36 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // REGISTER
-exports.register = async (req, res) => {
+const register = async (req, res) => {
     try {
-        const { fullname, email, password } = req.body;
+        const { fullname, gender, student_id, faculty, email, password } = req.body;
 
-        if (!fullname || !email || !password)
+        if (!fullname || !gender || !student_id || !faculty || !email || !password) {
             return res.status(400).json({ msg: "Please fill all fields" });
+        }
 
         const [existing] = await pool.query(
             "SELECT user_id FROM users WHERE email = ?",
             [email]
         );
-        if (existing.length > 0)
+
+        if (existing.length > 0) {
             return res.status(400).json({ msg: "Email already registered" });
+        }
 
         const hashed = await bcrypt.hash(password, 10);
 
         const [result] = await pool.query(
-            "INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)",
-            [fullname, email, hashed]
+            `INSERT INTO users 
+                (fullname, gender, student_id, faculty, email, password) 
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [fullname, gender, student_id, faculty, email, hashed]
         );
 
-        res.json({ msg: "Registered successfully", user_id: result.insertId });
+        res.json({
+            msg: "Registered successfully",
+            user_id: result.insertId
+        });
 
     } catch (err) {
         console.log(err);
@@ -33,7 +41,7 @@ exports.register = async (req, res) => {
 };
 
 // LOGIN
-exports.login = async (req, res) => {
+const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -41,14 +49,17 @@ exports.login = async (req, res) => {
             "SELECT * FROM users WHERE email = ?",
             [email]
         );
-        if (rows.length === 0)
+
+        if (rows.length === 0) {
             return res.status(400).json({ msg: "Invalid email or password" });
+        }
 
         const user = rows[0];
 
         const match = await bcrypt.compare(password, user.password);
-        if (!match)
+        if (!match) {
             return res.status(400).json({ msg: "Invalid email or password" });
+        }
 
         const token = jwt.sign(
             { user_id: user.user_id, fullname: user.fullname },
@@ -70,4 +81,9 @@ exports.login = async (req, res) => {
         console.log(err);
         res.status(500).json({ msg: "Server error" });
     }
+};
+
+module.exports = {
+    register,
+    login
 };
