@@ -1,0 +1,157 @@
+import React from "react";
+
+export default function AboutUs({ onClose }) {
+  return (
+    <div className="w-full min-h-screen font-sans bg-white">
+      {/* Header */}
+      <header className="w-full bg-yellow-400 shadow px-4 py-3">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <button 
+            onClick={onClose}
+            className="transition-transform hover:scale-105 active:scale-95 bg-transparent border-none p-0"
+          >
+            <img src="/image/logo.png" alt="CampusFind Logo" className="w-24 md:w-28" />
+          </button>
+
+          {/* Page Title */}
+          <h1 className="text-2xl font-bold text-gray-800">About Us</h1>
+
+          {/* Close/Back Button */}
+          <button
+            onClick={onClose}
+            className="flex items-center justify-center px-5 py-1.5 bg-white rounded-full shadow text-sm transition-all duration-300 hover:shadow-md hover:translate-y-[-1px] active:translate-y-[1px] active:shadow-sm active:bg-gray-50"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5 mr-2" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Home
+          </button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="w-full py-12 px-4 md:px-8 lg:px-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          {/* Page Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">About CampusFind</h1>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Your digital solution for managing lost and found items within the school community
+            </p>
+            <div className="w-24 h-1 bg-yellow-400 mx-auto mt-6"></div>
+          </div>
+
+          {/* Project Overview Section */}
+          <section className="mb-16 bg-white rounded-2xl shadow-lg p-8 md:p-10">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">Project Overview</h2>
+            <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+              <p>
+                The <strong>Online Lost and Found Management System</strong> is a web-based platform designed to help 
+                students, teachers, and staff easily report and recover lost or found items within the school campus. 
+                The system serves as a digital space where users can post information about lost belongings or items 
+                they have found, including details such as item description, location, date, and photos.
+              </p>
+              <p>
+                By digitizing the lost and found process, this project aims to reduce the time, effort, and confusion 
+                involved in manual reporting and searching. It promotes school community cooperation and offers a 
+                reliable way to return lost items to their rightful owners efficiently.
+              </p>
+            </div>
+          </section>
+
+          {/* Development Team Section */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Development Team</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { name: "Mark Joseph Arambulo", role: "" },
+                { name: "Nelson James Casambros", role: "" },
+                { name: "Jian Rovic Reyes", role: "" },
+                { name: "Andrei Montaniel", role: "" },
+                { name: "Jherome Ocampo", role: "" },
+                { name: "Jairus Valenton", role: "" },
+              ].map((member, index) => (
+                <div key={index} className="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300">
+                  <div className="w-20 h-20 bg-yellow-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span className="text-2xl font-bold text-yellow-600">
+                      {member.name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-1">{member.name}</h3>
+                  <p className="text-gray-600">{member.role}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Mission Statement */}
+          <section className="bg-yellow-400 rounded-2xl shadow-lg p-10 text-center">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Mission</h2>
+            <p className="text-gray-800 text-xl italic leading-relaxed max-w-3xl mx-auto">
+              "To promote efficiency, accountability, and community involvement within the school by using technology 
+              to manage lost and found items, helping ensure that belongings are safely returned to their rightful owners."
+            </p>
+          </section>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="w-full bg-yellow-400 py-6 px-5 grid grid-cols-2 md:grid-cols-5 gap-6 text-sm">
+        {/* Logo - spans both columns on xs */}
+        <div className="col-span-2 md:col-span-1">
+          <button 
+            onClick={onClose}
+            className="inline-block transition-transform hover:scale-105 active:scale-95 bg-transparent border-none p-0"
+          >
+            <img src="/image/logo.png" alt="CampusFind Logo" className="w-32 md:w-max max-w-full" />
+          </button>
+        </div>
+
+        <div>
+          <h3 className="font-bold text-lg mb-3">Site</h3>
+          <ul className="space-y-2">
+            <li><a href="#" className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1">Lost</a></li>
+            <li><button onClick={onClose} className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1 bg-transparent border-none p-0 text-left">Report Lost</button></li>
+            <li><a href="#" className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1">Found</a></li>
+            <li><button onClick={onClose} className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1 bg-transparent border-none p-0 text-left">Report Found</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="font-bold text-lg mb-3">Help</h3>
+          <ul className="space-y-2">
+            {['Customer Support', 'Terms & Conditions', 'Privacy Policy'].map((item) => (
+              <li key={item}>
+                <a href="#" className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1">{item}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="font-bold text-lg mb-3">Links</h3>
+          <ul className="space-y-2">
+            {['LinkedIn', 'Facebook', 'YouTube', 'About Us'].map((item) => (
+              <li key={item}>
+                <a href="#" className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1">{item}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="font-bold text-lg mb-3">Contact</h3>
+          <p>Tel: +63 9171842885</p>
+          <p>Email: 1611campusfind@gmail.com</p>
+        </div>
+      </footer>
+    </div>
+  );
+}

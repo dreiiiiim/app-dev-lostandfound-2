@@ -1,262 +1,153 @@
-import { useState } from 'react'
-import './App.css'
+import React, { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
+import RegisterPage from './components/Register';
+import HomePage from './components/HomePage';
+import AboutUs from "./AboutUs";
 
-function App() {
-   const [formData, setFormData] = useState({
-    name: '',
-    gender: '',
-    studentId: '',
-    faculty: '',
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: ''
-  });
+const leftBg = new URL('./image/bg1.png', import.meta.url).href;
+const image5 = new URL('./image/image 5.png', import.meta.url).href;
+const logoImage = new URL('./image/logo.png', import.meta.url).href;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+function LoginPage({ onSignUpClick, onSignInSuccess }) {
+  const [showPassword, setShowPassword] = useState(false);
+  const [studentId, setStudentId] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
+    if (!studentId || !password) {
+      alert("Please enter your Student ID and password");
+      return;
+    }
+
+    try {
+      console.log("Login attempt:", studentId, password);
+      const res = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ student_id: studentId, password })
+      });
+
+      const data = await res.json();
+      console.log("Login response:", data);
+
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        onSignInSuccess();
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Something went wrong. Check console.");
+    }
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-        {/* Left Section - Image */}
-        <div className="md:w-1/2 bg-amber-400 flex items-center justify-center p-8">
-          <div className="text-center text-white">
-            <div className="w-full h-64  rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
-             
-            </div>
-            <p className="text-lg font-semibold">CampusFind</p>
-            <p className="mt-2">Lost & Found Items Gallery</p>
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      <div className="w-full lg:w-1/2 bg-yellow-400 flex flex-col items-center justify-center p-6 relative order-2 lg:order-1">
+        <img src={leftBg} alt="left" className="absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none" />
+        <div className="relative z-10 w-full max-w-xs sm:max-w-sm md:max-w-md text-center">
+          <div className="flex flex-col items-center mb-6">
+            <img src={logoImage} alt="CampusFind Logo" className="w-24 h-24 object-contain" />
+            <div className="text-3xl font-extrabold text-gray-800">CampusFind</div>
+            <div className="text-xs text-gray-700">Discover. Connect. Reclaim.</div>
           </div>
-        </div>
-        
-        {/* Right Section - Registration Form */}
-        <div className="md:w-1/2 p-8">
-          {/* Centered Header Section */}
-          <div className="mb-6 text-center">
-            <h1 className="text-3xl font-bold text-gray-800">UST</h1>
-            <h2 className="text-xl font-semibold text-gray-700">CampusFind</h2>
-            <h3 className="text-lg text-gray-600 mt-2">DID YOU LOSE SOMETHING?</h3>
-            <div className="w-16 h-1 bg-amber-400 mt-2 mx-auto"></div>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <h4 className="text-lg font-medium text-gray-700 mb-4 text-center">Register</h4>
-              
-              {/* Name Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="name">
-                  Name
-                </label>
-                <input 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                  id="name" 
-                  name="name"
-                  type="text" 
-                  placeholder="Enter your full name"
-                  value={formData.name}
-                  onChange={handleChange}
+
+          <div className="bg-white rounded-xl p-6 shadow-md">
+            <h3 className="font-bold text-black text-xl mb-4 text-center">Login To CampusFind</h3>
+            <form onSubmit={submit} className="space-y-3">
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Student ID</label>
+                <input
+                  value={studentId}
+                  onChange={(e) => setStudentId(e.target.value)}
+                  className="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-yellow-400"
+                  placeholder="YYYYXXXXXX (e.g., 2024123456)"
+                  pattern="[0-9]{10}"
+                  title="Format: YYYYXXXXXX (e.g., 2024123456)"
                   required
                 />
               </div>
-              
-              {/* Gender Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2">
-                  Gender
-                </label>
-                <div className="flex space-x-4">
-                  <label className="inline-flex items-center">
-                    <input 
-                      type="radio" 
-                      className="form-radio text-blue-500" 
-                      name="gender" 
-                      value="male"
-                      checked={formData.gender === 'male'}
-                      onChange={handleChange}
-                    />
-                    <span className="ml-2">Male</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input 
-                      type="radio" 
-                      className="form-radio text-blue-500" 
-                      name="gender" 
-                      value="female"
-                      checked={formData.gender === 'female'}
-                      onChange={handleChange}
-                    />
-                    <span className="ml-2">Female</span>
-                  </label>
-                  <label className="inline-flex items-center">
-                    <input 
-                      type="radio" 
-                      className="form-radio text-blue-500" 
-                      name="gender" 
-                      value="other"
-                      checked={formData.gender === 'other'}
-                      onChange={handleChange}
-                    />
-                    <span className="ml-2">Other</span>
-                  </label>
+
+              <div>
+                <label className="block text-xs text-gray-600 mb-1">Password</label>
+                <div className="relative">
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    type={showPassword ? 'text' : 'password'}
+                    className="w-full px-3 py-2 text-sm rounded-lg bg-gray-200 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-yellow-400"
+                    placeholder="Password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-700"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
               </div>
-              
-              {/* Student ID Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="studentId">
-                  Student ID
-                </label>
-                <input 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                  id="studentId" 
-                  name="studentId"
-                  type="text" 
-                  placeholder="Enter your student ID"
-                  value={formData.studentId}
-                  onChange={handleChange}
-                  required
-                />
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button type="submit" className="w-full sm:flex-1 bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-700 hover:scale-105 transition-transform">
+                  Sign In
+                </button>
+                <button type="button" onClick={onSignUpClick} className="w-full sm:flex-1 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 hover:scale-105 transition-transform">
+                  Sign Up
+                </button>
               </div>
-              
-              {/* Faculty Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="faculty">
-                  Faculty
-                </label>
-                <select 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                  id="faculty"
-                  name="faculty"
-                  value={formData.faculty}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled>Select your faculty</option>
-                  <option value="AB">AB</option>
-                  <option value="ENG">ENG</option>
-                  <option value="PHARM">PHARM</option>
-                  <option value="FMS">FMS</option>
-                  <option value="EDUC">EDUC</option>
-                  <option value="CIVIL LAW">CIVIL LAW</option>
-                  <option value="CANON LAW">CANON LAW</option>
-                  <option value="THEO">THEO</option>
-                  <option value="PHILO">PHILO</option>
-                  <option value="ARCHI">ARCHI</option>
-                  <option value="CBA">CBA</option>
-                  <option value="CFAD">CFAD</option>
-                  <option value="CICS">CICS</option>
-                  <option value="NURSING">NURSING</option>
-                  <option value="CRS">CRS</option>
-                  <option value="SCI">SCI</option>
-                  <option value="CTHM">CTHM</option>
-                  <option value="IPEA">IPEA</option>
-                  <option value="IR">IR</option>
-                  <option value="SHS">SHS</option>
-                </select>
-              </div>
-              
-              {/* Student Email Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="email">
-                  Student Email
-                </label>
-                <input 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                  id="email" 
-                  name="email"
-                  type="email" 
-                  placeholder="Enter your student email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              
-              {/* Username Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="username">
-                  Username
-                </label>
-                <input 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                  id="username" 
-                  name="username"
-                  type="text" 
-                  placeholder="Choose a username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              
-              {/* Password Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="password">
-                  Password
-                </label>
-                <input 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                  id="password" 
-                  name="password"
-                  type="password" 
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              
-              {/* Confirm Password Field */}
-              <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="confirmPassword">
-                  Confirm Password
-                </label>
-                <input 
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                  id="confirmPassword" 
-                  name="confirmPassword"
-                  type="password" 
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              
-              {/* Sign Up Button */}
-              <button 
-                type="submit" 
-                className="w-full bg-amber-400 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-600 transition duration-200"
-              >
-                Sign up
-              </button>
-              
-              {/* Sign In Link */}
-              <div className="mt-4 text-center">
-                <p className="text-gray-600">
-                  Already have an account? 
-                  <a href="#" className="text-blue-500 font-medium hover:underline ml-1">Sign in</a>
-                </p>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full lg:w-1/2 relative h-64 sm:h-80 md:h-96 lg:h-auto order-1 lg:order-2">
+        <div className="absolute inset-0 bg-center bg-cover z-0" style={{ backgroundImage: `url(${image5})` }} />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-8 py-8">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-yellow-400">
+            UST<br className="hidden sm:block" />CampusFind
+          </h1>
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mt-4">
+            DID YOU LOSE SOMETHING?
+          </h2>
         </div>
       </div>
     </div>
   );
-};
-export default App
-    
+}
+
+export default function App() {
+  const [currentPage, setCurrentPage] = useState('login'); // 'login', 'register', 'homepage'
+
+  const handleSignInSuccess = () => setCurrentPage('homepage');
+  const handleSignUpSuccess = (token, user) => setCurrentPage('homepage');
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setCurrentPage('login');
+  };
+
+  return (
+    <>
+      {currentPage === 'login' && (
+        <LoginPage
+          onSignUpClick={() => setCurrentPage('register')}
+          onSignInSuccess={handleSignInSuccess}
+        />
+      )}
+      {currentPage === 'register' && (
+        <RegisterPage
+          onBackToLogin={() => setCurrentPage('login')}
+          onSignUpSuccess={handleSignUpSuccess}
+        />
+      )}
+      {currentPage === 'homepage' && <HomePage onLogout={handleLogout} />}
+    </>
+  );
+}
