@@ -269,75 +269,78 @@ export default function ReportFoundModal({ onClose, onSubmit }) {
   
 
       {/* ✔ FIXED FOOTER (matches homepage) */}
-      <footer className="w-full bg-yellow-400 py-6 px-6 grid grid-cols-2 md:grid-cols-5 gap-6 text-sm">
-        {/* Logo */}
-        <div className="col-span-2 md:col-span-1">
-          <button onClick={onClose}>
-            <img
-              src="/image/logo.png"
-              className="w-32 md:w-36"
-              alt="CampusFind Logo"
-            />
-          </button>
-        </div>
+      {/* Footer */}
+{/* Footer */}
+<footer className="w-full bg-yellow-400 py-6 px-5 grid grid-cols-2 md:grid-cols-5 gap-6 text-sm">
+  <div className="col-span-2 md:col-span-1">
+    <button onClick={onClose} className="inline-block transition-transform hover:scale-105 active:scale-95 bg-transparent border-none p-0">
+      <img src={logo} alt="CampusFind Logo" className="w-32 md:w-max max-w-full" />
+    </button>
+  </div>
 
-        {/* Site */}
-        <div>
-          <h3 className="font-bold text-lg mb-3">Site</h3>
-          <ul className="space-y-2">
-            <li>
-              <a className="hover:text-gray-800">Lost</a>
-            </li>
-            <li>
-              <button
-                onClick={onClose}
-                className="hover:text-gray-800 bg-transparent text-left"
-              >
-                Report Lost
-              </button>
-            </li>
-            <li>
-              <a className="hover:text-gray-800">Found</a>
-            </li>
-            <li>
-              <button
-                onClick={onClose}
-                className="hover:text-gray-800 bg-transparent text-left"
-              >
-                Report Found
-              </button>
-            </li>
-          </ul>
-        </div>
+  <div>
+    <h3 className="font-bold text-lg mb-3">Site</h3>
+    <ul className="space-y-2">
+      <li>
+        <button onClick={onClose} className="block w-full text-left bg-transparent border-none p-0 transition-all duration-300 hover:text-gray-800 hover:translate-x-1">
+          Lost
+        </button>
+      </li>
+      <li>
+        <button onClick={onClose} className="block w-full text-left bg-transparent border-none p-0 transition-all duration-300 hover:text-gray-800 hover:translate-x-1">
+          Report Lost
+        </button>
+      </li>
+      <li>
+        <button onClick={onClose} className="block w-full text-left bg-transparent border-none p-0 transition-all duration-300 hover:text-gray-800 hover:translate-x-1">
+          Found
+        </button>
+      </li>
+      <li>
+        <button onClick={onClose} className="block w-full text-left bg-transparent border-none p-0 transition-all duration-300 hover:text-gray-800 hover:translate-x-1">
+          Report Found
+        </button>
+      </li>
+    </ul>
+  </div>
 
-        {/* Help */}
-        <div>
-          <h3 className="font-bold text-lg mb-3">Help</h3>
-          <ul className="space-y-2">
-            <li>Customer Support</li>
-            <li>Terms & Conditions</li>
-            <li>Privacy Policy</li>
-          </ul>
-        </div>
+  <div>
+    <h3 className="font-bold text-lg mb-3">Help</h3>
+    <ul className="space-y-2">
+      {["Customer Support", "Terms & Conditions", "Privacy Policy"].map((item) => (
+        <li key={item}>
+          <a href="#" className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1">{item}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
 
-        {/* Links */}
-        <div>
-          <h3 className="font-bold text-lg mb-3">Links</h3>
-          <ul className="space-y-2">
-            <li>LinkedIn</li>
-            <li>Facebook</li>
-            <li>YouTube</li>
-            <li>About Us</li>
-          </ul>
-        </div>
+  <div>
+    <h3 className="font-bold text-lg mb-3">Links</h3>
+    <ul className="space-y-2">
+      {["LinkedIn", "Facebook", "YouTube"].map((item) => (
+        <li key={item}>
+          <a href="#" className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1">{item}</a>
+        </li>
+      ))}
+      <li>
+        <button
+          onClick={() => window.location.href = "/about-us"} // Link to AboutUs.jsx page
+          className="block w-full text-left bg-transparent border-none p-0 transition-all duration-300 hover:text-gray-800 hover:translate-x-1"
+        >
+          About Us
+        </button>
+      </li>
+    </ul>
+  </div>
 
-        {/* Contact */}
-        <div>
-          <h3 className="font-bold text-lg mb-3">Contact</h3>
-          <p>Tel: +63 9171842885</p>
-          <p>Email: 1611campusfind@gmail.com</p>
-        </div>
-      </footer>
+  <div>
+    <h3 className="font-bold text-lg mb-3">Contact</h3>
+    <p>Tel: +63 9171842885</p>
+    <p>Email: 1611campusfind@gmail.com</p>
+  </div>
+</footer>
+
     </div>
   );
 }

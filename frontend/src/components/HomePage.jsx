@@ -17,6 +17,12 @@ export default function HomePage({ onLogout }) {
   const [showReportFound, setShowReportFound] = useState(false);
   const [showLostItems, setShowLostItems] = useState(false);
   const [showFoundItems, setShowFoundItems] = useState(false); // Add this state
+  const [showAboutUs, setShowAboutUs] = useState(false);
+
+  const openAboutUs = () => setShowAboutUs(true);
+const closeAboutUs = () => setShowAboutUs(false);
+
+
   
   // State to store all lost items
   const [lostItems, setLostItems] = useState([
@@ -96,6 +102,12 @@ export default function HomePage({ onLogout }) {
       />
     );
   }
+
+
+  if (showAboutUs) {
+  return <AboutUs onBack={closeAboutUs} />;
+}
+
 
   if (showLostItems) {
     return (
@@ -356,7 +368,7 @@ export default function HomePage({ onLogout }) {
             }}
             className="inline-block transition-transform hover:scale-105 active:scale-95 bg-transparent border-none p-0"
           >
-            <img src="/image/logo.png" alt="CampusFind Logo" className="w-32 md:w-max max-w-full" />
+            <img src="/src/image/logo.png" alt="CampusFind Logo" className="w-32 md:w-max max-w-full" />
           </button>
         </div>
 
@@ -421,14 +433,15 @@ export default function HomePage({ onLogout }) {
   <ul className="space-y-2">
     {["LinkedIn", "Facebook", "YouTube", "About Us"].map((item) => (
       <li key={item}>
-        {item === "About Us" ? (
-          <button
-            onClick={() => goTo("about")}
-            className="block w-full text-left transition-all duration-300 hover:text-gray-800 hover:translate-x-1"
-          >
-            {item}
-          </button>
-        ) : (
+       {item === "About Us" ? (
+  <button
+    onClick={openAboutUs}
+    className="block w-full text-left transition-all duration-300 hover:text-gray-800 hover:translate-x-1"
+  >
+    {item}
+  </button>
+) : (
+
           <a
             href="#"
             className="block transition-all duration-300 hover:text-gray-800 hover:translate-x-1"

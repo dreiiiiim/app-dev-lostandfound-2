@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import RegisterPage from './components/Register';
 import HomePage from './components/HomePage';
-import AboutUs from "./AboutUs";
+
 
 const leftBg = new URL('./image/bg1.png', import.meta.url).href;
 const image5 = new URL('./image/image 5.png', import.meta.url).href;
