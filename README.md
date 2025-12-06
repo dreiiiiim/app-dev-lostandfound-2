@@ -22,7 +22,41 @@ npm run dev
 
 open localhost link
 
-GITHUB UPDATING
+GITHUB UPDATING TUTORIAL
+
+1. Check your git status
+   git status
+
+This shows which files have changed and which are staged for commit.
+
+2. Stage your changes
+
+To stage all changes:
+
+git add .
+
+Or stage specific files:
+
+git add filename1 filename2
+
+3. Commit your changes
+   git commit -m "Describe what you changed"
+
+Example:
+
+git commit -m "Fixed homepage layout and updated About Us page"
+
+4. Push to your existing GitHub repo
+
+If your repo is already linked to GitHub:
+
+git push
+
+If you have multiple branches, specify the branch:
+
+git push origin main
+
+Replace main with your branch name if different (some older repos use master).
 
 CREATE
 POST http://localhost:3001/auth/register
