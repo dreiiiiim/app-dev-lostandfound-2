@@ -12,7 +12,7 @@ export default function Profile({ onBack }) {
       if (!userData || !token) return;
 
       try {
-        const res = await fetch(`http://localhost:3001/users/${userData.user_id}`, {
+        const res = await fetch(`http://localhost:3001/api/users/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
